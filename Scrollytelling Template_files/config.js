@@ -120,6 +120,9 @@ var config = {
         pitch: 0.0,
         bearing: 0
       },
+      mapAnimation: 'flyTo',
+      rotateAnimation: false,
+      callback: '',
       onChapterEnter: [
         {
           layer: "emigr_pct",
