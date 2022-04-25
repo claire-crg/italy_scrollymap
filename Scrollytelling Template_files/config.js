@@ -7,19 +7,22 @@ var config = {
   title: "Italy, Migration, Urbanization",
   subtitle: "",
   byline: "",
-  footer: "Source: ISTAT Italian Census",
+  //footer: "Source: ISTAT Italian Census",
   chapters: [
     {
       id: "chap-1",
       title: "Italy's Urbanization",
       description:
-        "blah blah blah",
+        "Urban areas",
       location: {
         center: [7, 42.7],
         zoom: 5,
         pitch: 0.0,
         bearing: 0.0
       },
+      mapAnimation: 'flyTo',
+      rotateAnimation: false,
+      callback: '',
       onChapterEnter: [
         {
           layer: "zone_urb",
@@ -120,9 +123,6 @@ var config = {
         pitch: 0.0,
         bearing: 0
       },
-      mapAnimation: 'flyTo',
-      rotateAnimation: false,
-      callback: '',
       onChapterEnter: [
         {
           layer: "emigr_pct",
