@@ -49,11 +49,10 @@
         }
         #footer {
             width: 100%;
-            min-height: 5vh;
-            padding-top: 2vh;
-            padding-bottom: 2vh;
+            padding-top: 0.1vh;
+            padding-bottom: 0.1vh;
             text-align: center;
-            line-height: 25px;
+            line-height: 15px;
             font-size: 13px;
             position: relative;
             z-index: 5;
@@ -121,6 +120,11 @@
         .mapboxgl-canvas-container.mapboxgl-touch-zoom-rotate.mapboxgl-touch-drag-pan .mapboxgl-canvas {
             touch-action: unset;
         }
+        
+        .mapboxgl-popup {
+            max-width: 400px;
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        }
 
         </style>
 </head>
@@ -167,7 +171,7 @@ function setLayerOpacity(layer) {
         map.setPaintProperty(layer.layer, prop, layer.opacity, options);
     });
 }
-
+    
 var story = document.getElementById('story');
 var features = document.createElement('div');
 features.setAttribute('id', 'features');
@@ -268,11 +272,15 @@ var map = new mapboxgl.Map({
     zoom: config.chapters[0].location.zoom,
     bearing: config.chapters[0].location.bearing,
     pitch: config.chapters[0].location.pitch,
-    interactive: false,
+    interactive: true,
     transformRequest: transformRequest,
     projection: config.projection
 });
 
+map.scrollZoom.disable();
+map.dragPan.disable();
+
+    /*
 // Create a inset map if enabled in config.js
 if (config.inset) {
  var insetMap = new mapboxgl.Map({
@@ -282,50 +290,29 @@ if (config.inset) {
     // Hardcode above center value if you want insetMap to be static.
     zoom: 3, // starting zoom
     hash: false,
-    interactive: false,
+    interactive: true,
     attributionControl: false,
     //Future: Once official mapbox-gl-js has globe view enabled,
     //insetmap can be a globe with the following parameter.
-    //projection: 'globe'
+   // projection: 'globe'
   });
-}
+}*/
 
-if (config.showMarkers) {
-    var marker = new mapboxgl.Marker({ color: config.markerColor });
-    marker.setLngLat(config.chapters[0].location.center).addTo(map);
-}
+//if (config.showMarkers) {
+  //  var marker = new mapboxgl.Marker({ color: config.markerColor });
+//    marker.setLngLat(config.chapters[0].location.center).addTo(map);
+//}
 
 // instantiate the scrollama
 var scroller = scrollama();
 
 
 map.on("load", function() {
-    if (config.use3dTerrain) {
-        map.addSource('mapbox-dem', {
-            'type': 'raster-dem',
-            'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
-            'tileSize': 512,
-            'maxzoom': 14
-        });
-        // add the DEM source as a terrain layer with exaggerated height
-        map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
-
-        // add a sky layer that will show when the map is highly pitched
-        map.addLayer({
-            'id': 'sky',
-            'type': 'sky',
-            'paint': {
-                'sky-type': 'atmosphere',
-                'sky-atmosphere-sun': [0.0, 0.0],
-                'sky-atmosphere-sun-intensity': 15
-            }
-        });
-    };
 
     // As the map moves, grab and update bounds in inset map.
-    if (config.inset) {
+   /* if (config.inset) {
     map.on('move', getInsetBounds);
-    }
+    }*/
     // setup the instance, pass callback functions
     scroller
     .setup({
@@ -377,6 +364,31 @@ map.on("load", function() {
     });
 });
 
+
+/*var layerIds = ['migr_int_dest', 'zone_urb', 'migr_int_orgn', 'citt_motivi_pct', 'emigr_pct']
+    
+map.on("click", 'migr_int_dest', (e) => {
+    new mapboxgl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(e.properties.features)
+        .addTo(map);
+    console.log('yes')
+    
+    // Change the cursor to a pointer when
+    // the mouse is over the states layer.
+    map.on('mouseenter', 'migr_int_dest', () => {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+
+    // Change the cursor back to a pointer
+    // when it leaves the states layer.
+    map.on('mouseleave', 'migr_int_dest', () => {
+        map.getCanvas().style.cursor = '';
+    });
+    
+})*/
+
+  /*  
 //Helper functions for insetmap
 function getInsetBounds() {
             let bounds = map.getBounds();
@@ -456,12 +468,10 @@ function addInsetLayer(bounds) {
 
 function updateInsetLayer(bounds) {
     insetMap.getSource('boundsSource').setData(bounds);
-}
-
-
+}*/
 
 // setup resize event
-window.addEventListener('resize', scroller.resize);
+//window.addEventListener('resize', scroller.resize);
 
 </script>
 
