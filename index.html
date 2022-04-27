@@ -353,7 +353,7 @@ map.on("load", function() {
                 });
             });
         }
-    if (chapter = config.chapters[1]){
+    if (chapter === config.chapters[1]){
         map.on("click", "migr_int_dest", (event) => {
             const features = map.queryRenderedFeatures(event.point, {
               layers: ["migr_int_dest"],
