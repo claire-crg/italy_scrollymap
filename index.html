@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-    <!-- https://claire-crg.github.io/italy_scrollymap/ -->
 <head>
     <meta charset='utf-8' />
     <title>Mapbox Storytelling</title>
@@ -307,7 +306,6 @@ if (config.inset) {
 // instantiate the scrollama
 var scroller = scrollama();
 
-
 map.on("load", function() {
 
     // As the map moves, grab and update bounds in inset map.
@@ -322,20 +320,20 @@ map.on("load", function() {
         progress: true
     })
     .onStepEnter(async response => {
-        var chapter = config.chapters.find(chap => chap.id === response.element.id);
+         chapter = config.chapters.find(chap => chap.id === response.element.id);
         response.element.classList.add('active');
         map[chapter.mapAnimation || 'flyTo'](chapter.location);
         // Incase you do not want to have a dynamic inset map,
         // rather want to keep it a static view but still change the
         // bbox as main map move: comment out the below if section.
-        if (config.inset) {
+        /*if (config.inset) {
           if (chapter.location.zoom < 5) {
             insetMap.flyTo({center: chapter.location.center, zoom: 0});
           }
           else {
             insetMap.flyTo({center: chapter.location.center, zoom: 3});
           }
-        }
+        }*/
         if (config.showMarkers) {
             marker.setLngLat(chapter.location.center);
         }
@@ -355,6 +353,55 @@ map.on("load", function() {
                 });
             });
         }
+    if (chapter = config.chapters[1]){
+        map.on("click", "migr_int_dest", (event) => {
+            const features = map.queryRenderedFeatures(event.point, {
+              layers: ["migr_int_dest"],
+            });
+            if (!features.length) {
+              return;
+            }
+            const feature = features[0];
+
+            const popup = new mapboxgl.Popup({ offset: [0, -15] })
+              .setLngLat(event.lngLat)
+            .setHTML(`<p> Rate of people internally migrating to this region: ${feature.properties.migr_dest_}</p>`)
+              .addTo(map);
+        });
+    }
+       /* if (chapter == config.chapters[2]){
+            map.on("click", "migr_int_orgn", (event) => {
+                const features = map.queryRenderedFeatures(event.point, {
+                  layers: ["migr_int_orgn"],
+                });
+                if (!features.length) {
+                  return;
+                }
+                const feature = features[0];
+
+                const popup = new mapboxgl.Popup({ offset: [0, -15] })
+                  .setLngLat(event.lngLat)
+                .setHTML(`<p> Rate of people internally emigrating from this region: ${feature.properties.migr_orgn_}</p>`)
+                  .addTo(map);
+            });
+        }
+         if (chapter == config.chapters[4]){
+            map.on("click", "emigr_pct", (event) => {
+                const features = map.queryRenderedFeatures(event.point, {
+                  layers: ["emigr_pct"],
+                });
+                if (!features.length) {
+                  return;
+                }
+                const feature = features[0];
+
+                const popup = new mapboxgl.Popup({ offset: [0, -15] })
+                  .setLngLat(event.lngLat)
+                .setHTML(`<p> Rate of people internationally emigrating from this region: ${feature.properties.emgr_pct}</p>`)
+                  .addTo(map);
+            });
+        }*/
+        
     })
     .onStepExit(response => {
         var chapter = config.chapters.find(chap => chap.id === response.element.id);
@@ -365,6 +412,23 @@ map.on("load", function() {
     });
 });
 
+    
+/*map.on("click", "citt_motivi_pct", (event) => {
+    const features = map.queryRenderedFeatures(event.point, {
+      layers: ["citt_motivi_pct"],
+    });
+    if (!features.length) {
+      return;
+    }
+    const feature = features[0];
+
+    const popup = new mapboxgl.Popup({ offset: [0, -15] })
+      .setLngLat(event.lngLat)
+    .setHTML(`<p> Rate of people requesting citizenship in this province: ${feature.properties.citt_mot_%}</p>`)
+      .addTo(map);
+});*/
+
+   
 
 /*var layerIds = ['migr_int_dest', 'zone_urb', 'migr_int_orgn', 'citt_motivi_pct', 'emigr_pct']
     
